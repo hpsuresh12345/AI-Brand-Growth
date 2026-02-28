@@ -1,51 +1,45 @@
-import { Outlet } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
-import Sidebar, { NAV_ITEMS } from '../components/layout/Sidebar';
+import { Outlet, NavLink } from 'react-router-dom';
+import Sidebar from '../components/layout/Sidebar';
 import Header from '../components/layout/Header';
+
+const MOBILE_NAV = [
+    { path: '/', icon: '📊', label: 'Home' },
+    { path: '/brand', icon: '🏢', label: 'Brand' },
+    { path: '/generate', icon: '✨', label: 'Create' },
+    { path: '/analytics', icon: '📈', label: 'Stats' },
+    { path: '/alerts', icon: '🔔', label: 'Alerts' },
+];
 
 export default function CopilotLayout() {
     return (
-        <div className="min-h-screen flex bg-gray-50">
-            {/* Desktop & tablet sidebar */}
+        <div className="flex min-h-screen bg-bg-primary">
             <Sidebar />
-
-            {/* Main content area */}
-            <div className="flex-1 min-w-0 flex flex-col">
+            <div className="flex-1 flex flex-col min-w-0">
                 <Header />
-
-                {/* Mobile bottom nav */}
-                <div className="sm:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200 px-2 py-1.5 flex justify-around">
-                    {NAV_ITEMS.slice(0, 5).map((n) => (
-                        <NavLink
-                            key={n.to}
-                            to={n.to}
-                            end={n.to === '/'}
-                            className={({ isActive }) =>
-                                `flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg text-[10px] font-medium transition-all
-                ${isActive ? 'text-blue-600' : 'text-gray-400'}`
-                            }
-                        >
-                            <span className="text-base">{n.icon}</span>
-                            <span>{n.label.split(' ')[0]}</span>
-                        </NavLink>
-                    ))}
-                    <NavLink
-                        to="/alerts"
-                        className={({ isActive }) =>
-                            `flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg text-[10px] font-medium transition-all
-              ${isActive ? 'text-blue-600' : 'text-gray-400'}`
-                        }
-                    >
-                        <span className="text-base">🔔</span>
-                        <span>Alerts</span>
-                    </NavLink>
-                </div>
-
-                {/* Page content */}
-                <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto pb-20 sm:pb-8">
+                <main className="flex-1 p-5 md:p-6 pb-24 md:pb-6 overflow-y-auto">
                     <Outlet />
                 </main>
             </div>
+
+            {/* Mobile bottom nav */}
+            <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-bg-secondary/90 backdrop-blur-xl border-t border-border">
+                <div className="flex items-center justify-around py-2">
+                    {MOBILE_NAV.map(({ path, icon, label }) => (
+                        <NavLink
+                            key={path}
+                            to={path}
+                            end={path === '/'}
+                            className={({ isActive }) =>
+                                `flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-colors ${isActive ? 'text-accent-light' : 'text-text-muted'
+                                }`
+                            }
+                        >
+                            <span className="text-lg">{icon}</span>
+                            <span className="text-[9px] font-semibold">{label}</span>
+                        </NavLink>
+                    ))}
+                </div>
+            </nav>
         </div>
     );
 }
