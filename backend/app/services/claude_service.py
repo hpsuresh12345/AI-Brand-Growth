@@ -1,9 +1,13 @@
 """
-Claude AI Service for AI Brand Growth Copilot.
+AI Service for AI Brand Growth Copilot.
 
-Provides a production-grade async interface to the Anthropic Claude API
+Provides a production-grade async interface to the OpenAI GPT API
 with structured JSON enforcement, timeout handling, and comprehensive
 error management.
+
+Drop-in replacement for the original Claude service — exposes the same
+``call_claude()`` and ``call_claude_json()`` function signatures so that
+all existing agents continue to work without import changes.
 """
 
 import asyncio
@@ -11,7 +15,7 @@ import json
 import logging
 from typing import Any
 
-import anthropic
+from openai import AsyncOpenAI, AuthenticationError, RateLimitError, APIError
 
 from app.config import get_settings
 
@@ -19,9 +23,9 @@ from app.config import get_settings
 # Constants
 # ──────────────────────────────────────────────
 
-MODEL = "claude-sonnet-4-20250514"
+MODEL = "gpt-4o-mini"
 MAX_TOKENS = 1024
-REQUEST_TIMEOUT_SECONDS = 30
+REQUEST_TIMEOUT_SECONDS = 60
 
 logger = logging.getLogger(__name__)
 
@@ -29,14 +33,14 @@ logger = logging.getLogger(__name__)
 # Lazy-initialised Async Client
 # ──────────────────────────────────────────────
 
-_client: anthropic.AsyncAnthropic | None = None
+_client: AsyncOpenAI | None = None
 
 
-def _get_client() -> anthropic.AsyncAnthropic:
+def _get_client() -> AsyncOpenAI:
     """
-    Lazily initialise and return the Anthropic async client.
+    Lazily initialise and return the OpenAI async client.
 
-    Reads the API key from settings (ANTHROPIC_API_KEY env var).
+    Reads the API key from settings (OPENAI_API_KEY env var).
     Raises a clear error if the key is missing.
     """
     global _client
@@ -45,19 +49,19 @@ def _get_client() -> anthropic.AsyncAnthropic:
         return _client
 
     settings = get_settings()
-    api_key = settings.anthropic_api_key
+    api_key = settings.openai_api_key
 
     if not api_key:
         raise EnvironmentError(
-            "ANTHROPIC_API_KEY is not set. "
+            "OPENAI_API_KEY is not set. "
             "Add it to your .env file or export it as an environment variable."
         )
 
-    _client = anthropic.AsyncAnthropic(
+    _client = AsyncOpenAI(
         api_key=api_key,
         timeout=REQUEST_TIMEOUT_SECONDS,
     )
-    logger.info("Anthropic async client initialised")
+    logger.info("OpenAI async client initialised")
     return _client
 
 
@@ -67,7 +71,7 @@ def _get_client() -> anthropic.AsyncAnthropic:
 
 def _extract_json(text: str) -> dict[str, Any] | None:
     """
-    Attempt to parse JSON from Claude's response.
+    Attempt to parse JSON from GPT's response.
 
     Handles both raw JSON and JSON wrapped in ```json fences.
     Returns None if parsing fails.
@@ -83,7 +87,6 @@ def _extract_json(text: str) -> dict[str, Any] | None:
     # Strip markdown code fences
     if stripped.startswith("```"):
         lines = stripped.splitlines()
-        # Remove first and last fence lines
         inner = "\n".join(lines[1:-1] if lines[-1].strip() == "```" else lines[1:])
         try:
             return json.loads(inner.strip())
@@ -107,64 +110,71 @@ async def call_claude(
     timeout: float = REQUEST_TIMEOUT_SECONDS,
 ) -> dict[str, Any]:
     """
-    Send a prompt to Claude and return the response.
+    Send a prompt to GPT and return the response.
+
+    Function name kept as ``call_claude`` for backward compatibility
+    with all existing agent imports.
 
     Args:
         prompt:        The user-facing message / instruction.
-        system_prompt: System-level instruction to set Claude's behaviour.
-        model:         Claude model identifier.
+        system_prompt: System-level instruction.
+        model:         GPT model identifier.
         max_tokens:    Maximum tokens in the response.
-        temperature:   Sampling temperature (0.0 = deterministic, 1.0 = creative).
+        temperature:   Sampling temperature.
         timeout:       Per-request timeout in seconds.
 
     Returns:
         dict with keys:
-            - "content"  (str):         Raw text response from Claude.
-            - "json"     (dict | None): Parsed JSON if the response is valid JSON.
+            - "content"  (str):         Raw text response.
+            - "json"     (dict | None): Parsed JSON if valid.
             - "model"    (str):         Model used.
             - "usage"    (dict):        Token usage stats.
     """
     client = _get_client()
-    logger.info("Sending prompt to Claude (%s) — %d chars", model, len(prompt))
+    logger.info("Sending prompt to GPT (%s) — %d chars", model, len(prompt))
 
     try:
         response = await asyncio.wait_for(
-            client.messages.create(
+            client.chat.completions.create(
                 model=model,
                 max_tokens=max_tokens,
                 temperature=temperature,
-                system=system_prompt,
-                messages=[{"role": "user", "content": prompt}],
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": prompt},
+                ],
             ),
             timeout=timeout,
         )
 
     except asyncio.TimeoutError:
-        logger.error("Claude request timed out after %.1fs", timeout)
+        logger.error("GPT request timed out after %.1fs", timeout)
         raise TimeoutError(
-            f"Claude API request timed out after {timeout}s. "
+            f"GPT API request timed out after {timeout}s. "
             "Try increasing the timeout or simplifying the prompt."
         )
-    except anthropic.AuthenticationError:
-        logger.error("Invalid Anthropic API key")
+    except AuthenticationError:
+        logger.error("Invalid OpenAI API key")
         raise ValueError(
-            "Invalid Anthropic API key. Check your ANTHROPIC_API_KEY."
+            "Invalid OpenAI API key. Check your OPENAI_API_KEY."
         )
-    except anthropic.RateLimitError:
-        logger.warning("Rate-limited by Anthropic API")
+    except RateLimitError:
+        logger.warning("Rate-limited by OpenAI API")
         raise RuntimeError(
-            "Claude API rate limit reached. Please try again shortly."
+            "GPT API rate limit reached. Please try again shortly."
         )
-    except anthropic.APIError as exc:
-        logger.error("Anthropic API error: %s", exc)
-        raise RuntimeError(f"Claude API error: {exc}") from exc
+    except APIError as exc:
+        logger.error("OpenAI API error: %s", exc)
+        raise RuntimeError(f"GPT API error: {exc}") from exc
 
-    raw_text = response.content[0].text
+    raw_text = response.choices[0].message.content
+    usage = response.usage
+
     logger.info(
         "Response received — %d chars, %d in / %d out tokens",
         len(raw_text),
-        response.usage.input_tokens,
-        response.usage.output_tokens,
+        usage.prompt_tokens if usage else 0,
+        usage.completion_tokens if usage else 0,
     )
 
     return {
@@ -172,8 +182,8 @@ async def call_claude(
         "json": _extract_json(raw_text),
         "model": response.model,
         "usage": {
-            "input_tokens": response.usage.input_tokens,
-            "output_tokens": response.usage.output_tokens,
+            "input_tokens": usage.prompt_tokens if usage else 0,
+            "output_tokens": usage.completion_tokens if usage else 0,
         },
     }
 
@@ -192,11 +202,9 @@ async def call_claude_json(
     timeout: float = REQUEST_TIMEOUT_SECONDS,
 ) -> dict[str, Any]:
     """
-    Call Claude with strict JSON output enforcement.
+    Call GPT with strict JSON output enforcement.
 
-    Injects a JSON-only instruction into the system prompt and
-    validates the response. Raises ValueError if Claude fails
-    to return parseable JSON.
+    Function name kept as ``call_claude_json`` for backward compatibility.
 
     Returns:
         The parsed JSON dict directly (not wrapped).
@@ -219,9 +227,9 @@ async def call_claude_json(
 
     parsed = result["json"]
     if parsed is None:
-        logger.error("Claude did not return valid JSON: %s", result["content"][:200])
+        logger.error("GPT did not return valid JSON: %s", result["content"][:200])
         raise ValueError(
-            "Claude failed to return valid JSON. "
+            "GPT failed to return valid JSON. "
             "Raw response (truncated): " + result["content"][:300]
         )
 

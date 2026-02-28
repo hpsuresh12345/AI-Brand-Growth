@@ -19,8 +19,8 @@ class Settings(BaseSettings):
     app_env: str = "development"
     debug: bool = True
 
-    # Anthropic
-    anthropic_api_key: str = ""
+    # OpenAI
+    openai_api_key: str = ""
 
     # Database
     database_url: str = "sqlite:///./lead_engine.db"

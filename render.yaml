@@ -20,7 +20,7 @@ services:
         value: "false"
       - key: DATABASE_URL
         value: sqlite:///./lead_engine.db
-      - key: ANTHROPIC_API_KEY
+      - key: OPENAI_API_KEY
         sync: false  # Set manually in Render dashboard
       - key: JWT_SECRET_KEY
         generateValue: true
