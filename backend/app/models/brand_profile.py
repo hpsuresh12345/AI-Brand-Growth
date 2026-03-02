@@ -57,6 +57,12 @@ class BrandProfile(Base):
         doc="Primary growth objective, e.g. '10k followers in 90 days'",
     )
 
+    # ── Social Media ────────────────────────────
+    linkedin_handle = Column(String(200), nullable=True, doc="LinkedIn profile URL")
+    linkedin_access_token = Column(Text, nullable=True, doc="LinkedIn OAuth access token")
+    instagram_handle = Column(String(100), nullable=True, doc="Instagram @handle")
+    twitter_handle = Column(String(100), nullable=True, doc="Twitter/X @handle")
+
     # ── Metadata ─────────────────────────────────
     created_at = Column(
         DateTime,

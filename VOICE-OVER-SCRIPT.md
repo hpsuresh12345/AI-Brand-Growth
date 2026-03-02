@@ -1,141 +1,124 @@
-# 🎤 Voice Over Script - Read This Directly
+# 🎤 Voice Over Script — AI Brand Growth Copilot
 
-**Duration:** 3 minutes | **Style:** Professional, enthusiastic female voice
-
----
-
-## 📝 Full Script (Read at moderate pace)
-
-**[SCENE 1 - LOGIN PAGE - 0:00-0:20]**
-
-"Welcome to the AI Real Estate Lead Conversion Engine - a production-grade platform that transforms how you manage and convert real estate leads.
-
-Powered by Claude AI, this system automatically scores, categorizes, and generates personalized follow-ups for every lead.
-
-Let's dive in!"
-
-**[Pause 2 seconds while logging in]**
+**Duration:** 2 minutes | **Style:** Professional, warm female voice
 
 ---
 
-**[SCENE 2 - DASHBOARD - 0:20-0:50]**
+## 📝 Full Script
 
-"Here's our real-time dashboard. At a glance, you can see your entire sales pipeline.
+**[SCENE 1 — DASHBOARD — 0:00–0:15]**
 
-We have 19 leads worth 167 million rupees.
+"Welcome to the AI Brand Growth Copilot — your intelligent command center for scaling brand presence across social media.
 
-Notice how leads are automatically categorized - 8 Hot leads with 88% conversion probability, 6 Warm leads, and 5 Cold leads.
+The dashboard shows key metrics at a glance: total posts generated, average engagement, strategy status, and system health. Growth trends and weekly charts help you spot patterns instantly."
 
-The conversion funnel shows exactly where each lead stands in your pipeline."
-
-**[Pause 3 seconds to show charts]**
+**[Pause 2 seconds]**
 
 ---
 
-**[SCENE 3 - LEADS PAGE - 0:50-1:30]**
+**[SCENE 2 — BRAND PROFILE — 0:15–0:35]**
 
-"Now let's look at lead management. All leads are displayed in an intuitive card layout with AI scores visible at a glance.
+"Let's create a brand. In the Brand Profile, we define identity — name, niche, audience, tone, and growth goals.
 
-See how each lead has a score from 0 to 100? That's Claude AI analyzing budget, timeline, loan status, and urgency.
+Here, we're building TechVibe AI — a SaaS brand targeting B2B startup founders, with a bold conversational tone. Goal: ten thousand LinkedIn followers in ninety days.
 
-Let's look at our top lead - Deepa Krishnan with a 97 score."
+Once saved, the profile and strategy preview appear instantly."
 
-**[Pause 2 seconds while clicking into lead]**
-
----
-
-**[SCENE 4 - AI ANALYSIS - 1:30-2:15]**
-
-"This is where the magic happens.
-
-Claude AI has analyzed every detail about Deepa - she's a premium villa buyer with a 25 million rupee budget, pre-approved loan, and wants to close within 2 weeks.
-
-The AI gives her a 95% conversion probability with only 5% no-show risk.
-
-Watch as I generate an AI-powered follow-up message."
-
-**[Pause 3 seconds for AI to generate message]**
-
-"And there it is - a fully personalized WhatsApp message, ready to send. AI-generated in seconds, not hours."
+**[Pause 2 seconds]**
 
 ---
 
-**[SCENE 5 - FEATURES - 2:15-2:45]**
+**[SCENE 3 — STRATEGY PLANNER — 0:35–0:50]**
 
-"The platform includes collaborative notes for team communication, advanced search with multiple filters, and one-click CSV export.
+"The Strategy page is where AI shines. GPT generates a complete thirty-day content strategy — with content pillars, weekly themes, and a visual calendar grid.
 
-Everything is tracked in a complete audit log showing who did what and when.
+Every pillar maps to specific platforms. Each week has a clear objective."
 
-All secured with role-based access control for admins, agents, and viewers."
-
----
-
-**[SCENE 6 - NEW LEAD - 2:45-2:55]**
-
-"Adding a new lead is simple. Enter their details, and Claude AI instantly analyzes and scores them.
-
-The system handles the rest - categorization, probability calculation, and risk assessment - all automated."
+**[Pause 2 seconds]**
 
 ---
 
-**[SCENE 7 - CLOSING - 2:55-3:00]**
+**[SCENE 4 — CONTENT GENERATOR — 0:50–1:05]**
 
-"Built with FastAPI and React, deployed with Docker, and powered by Claude AI - this is the future of lead management.
+"The Content Generator creates platform-optimized posts on demand. Choose LinkedIn, Twitter, Instagram, or YouTube — enter a topic, hit Generate.
 
-Transform your sales pipeline today!"
+GPT writes a full post: hook, body, call-to-action, and hashtags. One click to copy, one click to save."
 
----
-
-## 📊 **Word Count:** 348 words
-## ⏱️ **Speaking Time:** ~2:55 at 120 words/minute
+**[Pause 2 seconds]**
 
 ---
 
-## 🎤 Voice Direction Notes
+**[SCENE 5 — CONTENT LIBRARY — 1:05–1:15]**
 
-### Tone & Pacing:
-- **0:00-0:20** - Energetic intro, establish excitement
-- **0:20-0:50** - Confident, pointing out key numbers with emphasis
-- **0:50-1:30** - Explanatory, helping viewer understand the interface
-- **1:30-2:15** - Impressed tone, highlighting AI capabilities
-- **2:15-2:45** - Quick overview, professional listing of features
-- **2:45-3:00** - Strong closing, inspirational call-to-action
+"All content lives in the Library — engagement scores, publication status, platform tags, and dates, all in one table.
 
-### Emphasis On:
-- ✨ **"AI-powered"** / **"Claude AI"**
+Filter by platform, edit any post, or send it for AI optimization."
+
+---
+
+**[SCENE 6 — ANALYTICS — 1:15–1:30]**
+
+"Engagement Analytics tracks trends across platforms with line and bar charts.
+
+Below, the AI Content Analysis tool lets you paste any post, enter your metrics — likes, comments, shares — and get a five-dimension diagnosis: hook, value, readability, emotion, and CTA."
+
+**[Pause 2 seconds]**
+
+---
+
+**[SCENE 7 — OPTIMIZATION — 1:30–1:40]**
+
+"Optimization Insights ranks AI recommendations by priority and impact. Each suggestion includes an explanation and a strategy shift. High-priority in red, medium in amber — every recommendation is actionable."
+
+---
+
+**[SCENE 8 — ALERTS — 1:40–1:50]**
+
+"The Alerts page monitors brands for engagement decline. The monitoring agent scans weekly, generates severity-coded alerts, and triggers corrective growth cycles automatically."
+
+---
+
+**[SCENE 9 — REPORTS & CLOSING — 1:50–2:00]**
+
+"Reports provide an executive summary — strategy status, content generated, and a timeline of every action taken.
+
+That's the AI Brand Growth Copilot — strategy, content, analysis, and optimization — all powered by GPT. Your AI marketing team, in one dashboard."
+
+---
+
+## 📊 Word Count: ~310 words
+## ⏱️ Speaking Time: ~2:00 at 155 words/minute
+
+---
+
+## 🎤 Voice Direction
+
+| Segment | Tone |
+|---|---|
+| 0:00–0:15 | Energetic intro, set the scene |
+| 0:15–0:35 | Confident walkthrough, highlight brand creation |
+| 0:35–1:05 | Impressed, showcase AI capabilities |
+| 1:05–1:30 | Professional, data-driven analytics |
+| 1:30–1:50 | Quick overview of insights & alerts |
+| 1:50–2:00 | Strong, inspirational close |
+
+### Emphasize:
+- ✨ **"AI-powered"** / **"GPT"**
 - ✨ **"automatically"** / **"instantly"**
-- ✨ **"95% conversion probability"**
-- ✨ **"personalized"**
-- ✨ Numbers: **"97 score"**, **"167 million"**, **"19 leads"**
-
-### Pause Points:
-- After **"Let's dive in!"** (2 seconds)
-- After **"your pipeline"** (3 seconds - show charts)
-- After **"97 score"** (2 seconds - clicking)
-- After **"follow-up message"** (3 seconds - AI generating)
-- Before **"Transform your sales pipeline today!"** (1 second)
+- ✨ **"thirty-day strategy"**
+- ✨ **"five-dimension diagnosis"**
+- ✨ **"your AI marketing team"**
 
 ---
 
-## 🎯 Alternative Shorter Version (90 seconds)
+## 🔊 How to Generate Audio
 
-If needed, use this condensed version:
-
-**[INTRO - 0:00-0:10]**
-"Welcome to the AI Real Estate Lead Conversion Engine, powered by Claude AI. Watch how it transforms lead management."
-
-**[DASHBOARD - 0:10-0:25]**
-"Here's our dashboard - 19 leads worth 167 million rupees. Automatically categorized as Hot, Warm, or Cold based on AI analysis."
-
-**[LEAD DETAIL - 0:25-0:50]**
-"Our top lead, Deepa, has a 97 AI score with 95% conversion probability. Watch as Claude AI generates a personalized WhatsApp message in seconds."
-
-**[FEATURES - 0:50-1:15]**
-"The platform includes team notes, CSV export, advanced search, complete audit logs, and role-based access control. Everything you need for production."
-
-**[CLOSING - 1:15-1:30]**
-"Built with modern tech, deployed with Docker, powered by Claude AI. The future of lead management is here."
+1. Copy the script above
+2. Go to **[elevenlabs.io](https://elevenlabs.io)** → free tier
+3. Select female voice (e.g., "Rachel" or "Bella")
+4. Paste script → Generate → Download MP3
+5. Overlay audio on the demo recording in **CapCut** or **DaVinci Resolve**
 
 ---
 
-**🎬 You're ready to record! Good luck!**
+🎬 **Ready to record!**

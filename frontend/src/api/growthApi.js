@@ -31,4 +31,11 @@ export const analyzeContent = (data) =>
 export const simulateWeeklyCheck = () =>
   api.post('/simulate-weekly-check').then(r => r.data);
 
+// ── Publishing ───────────────────────────────
+export const publishContent = (data) =>
+  api.post('/publish', data).then(r => r.data);
+
+export const validateLinkedInToken = (token) =>
+  api.post('/validate-linkedin-token', { access_token: token }).then(r => r.data);
+
 export default api;

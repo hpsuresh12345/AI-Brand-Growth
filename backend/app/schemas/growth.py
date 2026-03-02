@@ -24,6 +24,10 @@ class BrandProfileCreate(BaseModel):
     tone: str = Field(..., min_length=1, max_length=100, examples=["Bold & conversational"])
     expertise_areas: Optional[str] = Field(None, examples=["AI, Growth Marketing, Product"])
     growth_goal: Optional[str] = Field(None, examples=["10k LinkedIn followers in 90 days"])
+    linkedin_handle: Optional[str] = Field(None, examples=["https://linkedin.com/in/yourname"])
+    linkedin_access_token: Optional[str] = Field(None, examples=["AQV..."])
+    instagram_handle: Optional[str] = Field(None, examples=["@yourbrand"])
+    twitter_handle: Optional[str] = Field(None, examples=["@yourbrand"])
 
     model_config = {"json_schema_extra": {
         "example": {
@@ -33,6 +37,7 @@ class BrandProfileCreate(BaseModel):
             "tone": "Bold & conversational",
             "expertise_areas": "AI, Growth Marketing, Product-Led Growth",
             "growth_goal": "10k LinkedIn followers in 90 days",
+            "linkedin_handle": "https://linkedin.com/in/techvibe",
         }
     }}
 
@@ -72,6 +77,9 @@ class BrandProfileResponse(BaseModel):
     tone: str
     expertise_areas: Optional[str] = None
     growth_goal: Optional[str] = None
+    linkedin_handle: Optional[str] = None
+    instagram_handle: Optional[str] = None
+    twitter_handle: Optional[str] = None
     created_at: datetime
 
     model_config = {"from_attributes": True}
@@ -132,3 +140,21 @@ class WeeklyCheckResponse(BaseModel):
     alerts: list[dict[str, Any]]
     cycles_triggered: int
     timestamp: str
+
+
+class PublishRequest(BaseModel):
+    """Request to publish content to a social platform."""
+
+    brand_id: int = Field(..., gt=0)
+    platform: str = Field(..., examples=["LinkedIn"])
+    content: str = Field(..., min_length=1, examples=["My LinkedIn post content..."])
+
+
+class PublishResponse(BaseModel):
+    """Response from publishing content."""
+
+    success: bool
+    platform: str
+    post_id: Optional[str] = None
+    message: str
+    profile_name: Optional[str] = None

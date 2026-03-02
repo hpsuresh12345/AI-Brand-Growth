@@ -29,7 +29,10 @@ from app.schemas.growth import (
     DashboardMetrics,
     StrategyResponse,
     WeeklyCheckResponse,
+    PublishRequest,
+    PublishResponse,
 )
+from app.services.linkedin_publisher import publish_to_linkedin, validate_linkedin_token
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +61,10 @@ async def create_brand_profile(
         tone=payload.tone,
         expertise_areas=payload.expertise_areas,
         growth_goal=payload.growth_goal,
+        linkedin_handle=payload.linkedin_handle,
+        linkedin_access_token=payload.linkedin_access_token,
+        instagram_handle=payload.instagram_handle,
+        twitter_handle=payload.twitter_handle,
     )
     db.add(brand)
     await db.flush()
@@ -256,4 +263,78 @@ async def simulate_weekly_check(
             detail=f"Weekly check failed: {exc}",
         )
 
+    return result
+
+
+# ──────────────────────────────────────────────
+# POST /publish
+# ──────────────────────────────────────────────
+
+@router.post(
+    "/publish",
+    response_model=PublishResponse,
+    summary="Publish content to a social media platform",
+)
+async def publish_content(
+    payload: PublishRequest,
+    db: AsyncSession = Depends(get_async_db),
+):
+    """
+    Publish AI-generated content directly to LinkedIn.
+    Requires the brand to have a valid LinkedIn access token.
+    """
+    # Get brand
+    result = await db.execute(
+        select(BrandProfile).where(BrandProfile.id == payload.brand_id)
+    )
+    brand = result.scalar_one_or_none()
+    if not brand:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Brand id={payload.brand_id} not found.",
+        )
+
+    if payload.platform.lower() == "linkedin":
+        if not brand.linkedin_access_token:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="No LinkedIn access token configured. Add it in Brand Profile.",
+            )
+        try:
+            publish_result = await publish_to_linkedin(
+                access_token=brand.linkedin_access_token,
+                text=payload.content,
+            )
+            return publish_result
+        except Exception as exc:
+            logger.error("LinkedIn publish error: %s", exc)
+            return PublishResponse(
+                success=False,
+                platform="LinkedIn",
+                message=f"Publish failed: {exc}",
+            )
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Platform '{payload.platform}' is not yet supported. Available: LinkedIn.",
+        )
+
+
+# ──────────────────────────────────────────────
+# POST /validate-linkedin-token
+# ──────────────────────────────────────────────
+
+@router.post(
+    "/validate-linkedin-token",
+    summary="Validate a LinkedIn access token",
+)
+async def validate_token(token: dict):
+    """Check if a LinkedIn access token is valid."""
+    access_token = token.get("access_token", "")
+    if not access_token:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="access_token is required.",
+        )
+    result = await validate_linkedin_token(access_token)
     return result
